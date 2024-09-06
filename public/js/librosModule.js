@@ -22,6 +22,10 @@ function createLibro(formData) {
     }).then(response => response.json()).then(data => {
         console.log(data);
         loadLibro();
+        document.getElementById('titulo').value = '';
+		document.getElementById('autor').value = '';
+		document.getElementById('disponibilidad').value = '';
+		document.getElementById('categoria_id').value = '';
     });
 }
 
@@ -36,6 +40,10 @@ function updateLibro(id, formData) {
         console.log(data);
         loadLibro();
 		document.getElementById('id').value = '';
+		document.getElementById('titulo').value = '';
+		document.getElementById('autor').value = '';
+		document.getElementById('disponibilidad').value = '';
+		document.getElementById('categoria_id').value = '';
     });
 }
 
@@ -56,7 +64,6 @@ function loadLibro() {
             libroList.innerHTML = '';
             libros.forEach(libro => {
                 console.log(libro);
-                
                 const li = document.createElement('li');
                 li.textContent = `${libro.titulo} - ${libro.autor}/(${libro.nombre}): ${libro.disponibilidad==1?'disponible':'agotado'}`;
                 li.className = 'list-group-item';

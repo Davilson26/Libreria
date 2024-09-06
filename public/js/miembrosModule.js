@@ -13,7 +13,7 @@ document.getElementById('userForm').addEventListener('submit', function(e) {
 });
 
 function createUser(user) {
-    fetch('../api/miembrosController.php', {
+    fetch('../../controllers/miembrosController.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -22,11 +22,14 @@ function createUser(user) {
     }).then(response => response.json()).then(data => {
         console.log(data);
         loadUsers();
+		document.getElementById('userName').value = '';
+		document.getElementById('telefono').value = '';
+		document.getElementById('userEmail').value = '';
     });
 }
 
 function updateUser(id, user) {
-    fetch(`../api/miembrosController.php?id=${id}`, {
+    fetch(`../../controllers/miembrosController.php?id=${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -36,11 +39,14 @@ function updateUser(id, user) {
         console.log(data);
         loadUsers();
 		document.getElementById('userId').value = '';
+		document.getElementById('userName').value = '';
+		document.getElementById('telefono').value = '';
+		document.getElementById('userEmail').value = '';
     });
 }
 
 function deleteUser(id) {
-    fetch(`../api/miembrosController.php?id=${id}`, {
+    fetch(`../../controllers/miembrosController.php?id=${id}`, {
         method: 'DELETE'
     }).then(response => response.json()).then(data => {
         console.log(data);
@@ -49,16 +55,17 @@ function deleteUser(id) {
 }
 
 function loadUsers() {
-    fetch('../api/miembrosController.php')
+    fetch('../../controllers/miembrosController.php')
         .then(response => response.json())
         .then(users => {
             const userList = document.getElementById('userList');
             userList.innerHTML = '';
             users.forEach(user => {
                 const li = document.createElement('li');
-                li.textContent = `${user.name} (${user.email})`;
-                li.appendChild(createDeleteButton(user.id));
+                li.textContent = `${user.name} / ${user.email}`;
+                li.className = 'list-group-item';
                 li.appendChild(createEditButton(user));
+                li.appendChild(createDeleteButton(user.id));
                 userList.appendChild(li);
             });
         });
@@ -67,6 +74,7 @@ function loadUsers() {
 function createDeleteButton(id) {
     const button = document.createElement('button');
     button.textContent = 'Eliminar';
+    button.className = 'btn btn-sm btn-danger '
     button.onclick = () => deleteUser(id);
     return button;
 }
@@ -74,9 +82,11 @@ function createDeleteButton(id) {
 function createEditButton(user) {
     const button = document.createElement('button');
     button.textContent = 'Editar';
+    button.className = 'btn btn-sm btn-outline-success mx-2'
     button.onclick = () => {
         document.getElementById('userId').value = user.id;
         document.getElementById('userName').value = user.name;
+        document.getElementById('telefono').value = user.telefono;
         document.getElementById('userEmail').value = user.email;
     };
     return button;
